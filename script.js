@@ -69,18 +69,36 @@ function generatesudoku(grid, row, column){
     return false;
 }
 
+function generatesodukuandremove(grid){
+    generatesudoku(grid, 0, 0);
+    let k = 45;
+    while (k > 0) {
+        let cellid = Math.floor(Math.random() * 81);
+        let i = Math.floor(cellid / 9);
+        let j = cellid % 9;
+
+        if (grid[i][j] !== 0) {
+            grid[i][j] = 0;
+            k--;
+        }
+    }
+}
+
 function isvalid(grid){
 
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 9; j++){
-            if(grid[i][j] <= 0 || grid[i][j] > 9) return false;
-        }
-    }
+            let num = grid[i][j];
+            
+            if(num === 0) continue;
+            if(num < 1 || num > 9) return false;
+            grid[i][j] = 0;
+            if(!check(grid, i, j, num)){
+                grid[i][j] = num;
+                return false;
+            }
 
-    solvesudoku(grid, 0, 0);
-    for(let i = 0; i < 9; i++){
-        for(let j = 0; j < 9; j++){
-            if(grid[i][j] === 0) return false;
+            grid[i][j] = num;
         }
     }
 
@@ -143,7 +161,7 @@ function gridtotable(grid){
             const input = cells[col].querySelector("input");
             const value = grid[row][col];
 
-            input.value = value;
+            input.value = value === 0 ? "" : value;
         }
     }
 }
@@ -167,10 +185,50 @@ const grid = new Array(9).fill(0).map(() => new Array(9).fill(0));
 // generatesudoku(grid, 0, 0);
 // grid.forEach(row => console.log(row.join(" ")));
 
-
 window.onload = () => {
     makegridhtml();
-    generatesudoku(grid, 0, 0);
-    gridtotable(grid);
+
+    document.getElementById("generate").onclick = generatefinal;
+    document.getElementById("solve").onclick = solvefinal;
+    document.getElementById("reset").onclick = clearall;
 };
 
+function generatefinal(){
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 9; j++){
+            grid[i][j] = 0;
+        }
+    }
+    generatesodukuandremove(grid, 0, 0);
+    gridtotable(grid);
+}
+
+function solvefinal(){
+    const newgrid = tabletogrid();
+    if(!isvalid(newgrid)){
+        const prev = document.getElementById("errormsg");
+        if(prev) prev.remove();
+
+        const p = document.createElement("p");
+        p.id = "errormsg";
+        p.textContent = "Input is invalid";
+        document.body.appendChild(p);
+        return;
+    }
+    else{
+        const prev = document.getElementById("errormsg");
+        if(prev) prev.remove();
+    }
+    solvesudoku(newgrid, 0, 0);
+    gridtotable(newgrid); 
+}
+
+function clearall(){
+    const newgrid = tabletogrid();
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 9; j++){
+            newgrid[i][j] = 0;
+        }
+    }
+    gridtotable(newgrid);
+}
