@@ -5,14 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>soduku solver</title>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>sudoku solver</h1>
-    <div id="sudoku-container"></div>
-    <table id="sudoku-table"></table>
-    <button id="generate">generate</button>
-    <button id="solve">solve</button>
-    <button id="reset">reset</button>
+    <p>soduku solver for any valid puzzle using backtracking.</p>
+    <div id="sudoku-container">
+        <table id="sudoku-table"></table>
+    </div>
+
+    <div id="buttoncontainer">
+        <button id="generate" class="button">generate</button>
+        <button id="solve" class="button">solve</button>
+        <button id="reset" class="button">reset</button>
+    </div>
+
     <p id="errormsg"></p>
+    <a class="github-button" href="https://github.com/06harshini" target="_blank" rel="noopener">GitHub</a>
 </body>
 </html>

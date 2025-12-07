@@ -194,6 +194,9 @@ window.onload = () => {
 };
 
 function generatefinal(){
+    const prev = document.getElementById("errormsg");
+        if(prev) prev.remove();
+
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 9; j++){
             grid[i][j] = 0;
@@ -224,6 +227,9 @@ function solvefinal(){
 }
 
 function clearall(){
+    const prev = document.getElementById("errormsg");
+        if(prev) prev.remove();
+        
     const newgrid = tabletogrid();
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 9; j++){
